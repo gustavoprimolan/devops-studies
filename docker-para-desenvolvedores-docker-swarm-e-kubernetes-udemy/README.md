@@ -195,9 +195,60 @@ dokcer run -d -p 3000:80 nginx
 * A flag run é inserida junto do **comando run**;
 
 
+```docker
+
+docker run -d -p 80:80 --name nginx_app_name nginx
+
+docker stop nginx_app_name
+
+docker start nginx_app_name
+
+```
+
+## Verificando os logs
+
+* Podemos **verificar o que aconteceu em um container** com o comando logs;
+* Utilizamos da seguinte maneira: **docker logs ID_DO_CONTAINER**;
+* As últimas ações realizadas no container, serão **exibidas no terminal**;
+
+```docker
+
+docker logs nginx_app
+
+<!-- -f Significa follow - vai seguir os novos logs -->
+docker logs -f nginx_app_name
+
+```
+
+## Removendo container
+
+* Podemos **remover um container da máquina** que estamos executando o Docker;
+* O comando é **docker -rm ID_DO_CONTAINER**;
+* Se o container estiver rodando ainda, podemos utlizar a **flag -f (force)**;
+* O container removido não é mais listado em docker ps -a;
 
 
+# Criando imagens e avançando em containers
+
+## O que são imagens?
+
+* Imagens **são originadas de arquivos que programamos** para que o Docker crie uma estrutura que execute determinadas ações em containers;
+* Elas contém informações como: imagens base, diretório base, comandos a serem executados, porta da aplicação e etc;
+* Ao rodar um container baseado na imagem, **as instruções serão executadas em camadas**;
 
 
+## Como escolher uma boa imagem
 
+* Podemos fazer download das imagens em: https://hub.docker.com;
+* Porém **qualquer um pode fazer upload de uma imagem**, isso é um problema;
+* Devemos então nos atentar as **imagens oficiais**;
+* Outro parâmetro interessante é a **quantidade de download** e a **quantidade de stars**;
 
+## Criando uma imagem
+
+* Para criar uma imagem vamos precisar de um arquivo **Dockerfile** em uma pasta que ficará o projeto;
+* Este arquivo vai precisar de algumas instruções para poder ser executado;
+* **FROM**: imagem base;
+* **WORKDIR**: diretório da aplicação;
+* **EXPOSE**: porta da aplicação;
+* **COPY**: quais arquivos precisam ser copiados;
