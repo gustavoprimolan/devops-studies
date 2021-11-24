@@ -252,3 +252,36 @@ docker logs -f nginx_app_name
 * **WORKDIR**: diretório da aplicação;
 * **EXPOSE**: porta da aplicação;
 * **COPY**: quais arquivos precisam ser copiados;
+
+
+## Executando uma imagem
+
+* Para executar a imagem primeiramente **vamos precisar fazer o build**;
+* O comando é **docker build DIRETORIO_DA_IMAGEM**;
+* Depois vamos utilizar o **docker run IMAGEM** para executá-la
+
+
+```docker
+
+<!-- LISTAR IMAGEM -->
+docker image ls
+
+docker run ID_IMAGEM
+
+docker run -d -p 3000:3000 ID_IMAGEM
+
+docker run -d -p 3000:3000 --name ID_IMAGEM
+```
+
+## Alterando uma imagem
+
+* Sempre que alterarmos o código de uma imagem **vamos precisar fazer o build novamente**;
+* Para o Docker é como se fosse **uma imagem completamente nova**;
+* Após fazer o build vamos executá-la por o outro id único criada com o docker run;
+
+## Camadas das imagens
+
+* Aas imagens do Docker são divididas em **camadas** (layers);
+* Cada instrução no Dockerfile **representa uma layer**;
+* Quando algo é utilizado **apenas as layers depois da linha atualiazada são refeitas**;
+* O resto permanece em cache, tornando o **build mais rápido**;
