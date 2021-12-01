@@ -281,7 +281,106 @@ docker run -d -p 3000:3000 --name ID_IMAGEM
 
 ## Camadas das imagens
 
-* Aas imagens do Docker são divididas em **camadas** (layers);
+* As imagens do Docker são divididas em **camadas** (layers);
 * Cada instrução no Dockerfile **representa uma layer**;
 * Quando algo é utilizado **apenas as layers depois da linha atualiazada são refeitas**;
 * O resto permanece em cache, tornando o **build mais rápido**;
+
+## Download de imagens
+
+* Podemos **fazer o download de alguma imagem** do hub e deixá-la disponível em nosso ambinete;
+* Vamos utilizar o comando **docker pull <imagem>**;
+* Desta maneira, caso se use em outro container, **a imagem já estará pronta para ser utilizada**;
+
+## Aprender mais sobre os comandos
+
+* Todo comando no docker tem acesso a uma **flag --help**;
+* Utilizando desta maneira, **podemos ver todas as opções disponíveis nos comandos;**
+* Para relembrar algo ou executar uma tarefa diferente com o mesmo;
+* Ex: docker run --help;
+
+```docker
+docker run --help
+
+docker images --help
+```
+
+## Múltiplas aplicações, mesmo container
+
+* Podemos inicializar **vários containers com a mesma imagem**;
+* As aplicações funcionarão em paralelo;
+* Para testar isso, podemos determinar uma **porta diferente** para cada uma, e rodar no **modo detached**;
+
+```docker
+
+dokcer run -d -p 3000:3000 --name meu_node6 ID_IMAGEM
+dokcer run -d -p 4000:3000 --name meu_node7 ID_IMAGEM
+dokcer run -d -p 5000:3000 --name meu_node8 ID_IMAGEM
+
+```
+
+## Alterando o nome da imagem e tag
+* Podemos **nomear a imagem** que criamos;
+* Vamos utilizar o comando **docker tag ID_DA_IMAGEM NOME_DA_TAG** para isso;
+* Também podemos **modificar a tag**, que seria como uma versão da imagem, semelhante ao git;
+* Para inserir a tag utilizamos: **docker tag ID_DA_IMAGEM NOME_DA_TAG(REPOSITORY):NOME_TAG**
+
+```docker
+
+docker tag bddf852dfb2 minhaimage
+
+<!-- COM VERSAO DA IMAGEM -->
+docker tag bddf852dfb2 minhaimage:2.0.0
+
+```
+
+## Iniciando imagem com um nome
+
+* Podemos **nomear a imagem já na sua criação**;
+* Vamos utilizar a **flag -t**
+* É possível inserir o nome e a tag, na sintaxe: **nome:tag**
+* Isso torna o processo de nomeação mais simples;
+
+```docker
+
+<!-- NO DIRETORIO DO DOCKERIFLE -->
+docker build -t meunode_diferente .
+
+<!-- COM VERSAO -->
+docker build -t meunode_diferente:1.0 .
+
+```
+
+## Comando start interativo
+
+* A **flag -it** pode ser utilizada com o comando start também;
+* Ou seja, não precisamos criar um novo container para utilizá-lo no terminal;
+* O comando é: **docker start -it CONTAINER**
+
+## Removendo imagens
+
+* Assim como nos containers, **podemos remover imagens com um comando**;
+* Ele é o: **docker rmi NOME_OU_ID_IMAGEM**
+* Imagens que estão sendo utlizadas por um container, apresentarão um erro no terminal;
+* Podemos utilizar a **flag -f** para forçar a remoção;
+
+## Removendo imagens e containers
+
+* Com o comando **docker system prune**;
+* Podemos **remover imagens, containers e networks** não utilizados;
+* O sistema irá exigir uma confirmação para realizar a remoção;
+
+## Removendo container após utilizar
+
+* Um container pode ser automaticamente deletado após sua utilização;
+* Para isso vamos utilizar a **flag --rm**;
+* O comando seria: **docker run -rm CONTAINER**;
+* Desta maneira **economizamos espaço no computador** e deixamos o ambiente mais organizado;
+
+
+## Copiando arquivos entre containers
+
+* Para cópia de arquivos entre containers utilizamos o comando: **docker cp**;
+* Pode ser tulizado para copiar um arquivo de um diretório para um container;
+* Ou de um container para um diretório determinado;
+
