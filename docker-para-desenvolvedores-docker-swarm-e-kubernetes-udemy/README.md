@@ -384,3 +384,49 @@ docker build -t meunode_diferente:1.0 .
 * Pode ser tulizado para copiar um arquivo de um diretório para um container;
 * Ou de um container para um diretório determinado;
 
+```docker
+
+<!-- Pega o nome do arquivo, dois pontos e o caminho relativo onde está o arquvio e o segundo parametro é o destino (para onde o arquivo será copiado) -->
+docker cp node_diferente2:/app/app.js ./copia/
+
+```
+
+## Verificar informações de processamento
+
+* Para verifica dados de execução de um container utilizamos: **docker top ID_CONTAINER**
+* Desta maneira temos acesso a quando ele foi iniciado, id do processo, descrição do comando CMD;
+
+```docker
+
+docker top node_diferente2
+
+```
+
+## Verificar dados de um container
+
+* Para verificar diversas informações como: **id, data de criação, imagem e muito mais**;
+* Utilizamos o comando **docker inspect ID_CONTAINER**
+* Desta maneira conseguimos entender como o container está configurado;
+
+## Verificar processamento
+
+* Para verificar os processos que estão sendo executados em um container, utilizamos o comando: **docker stats**
+* Desta maneira temos acesso ao andamento do processamento e memória gasta pelo mesmo;
+
+## Autenticação no Docker Hub
+
+* Para concluir esta aula vamos precisar criar uma conta no: https://hub.docker.com
+* Para autenticar-se pelo terminal vamos utilizar o comando **docker login**;
+* E então inserir usuário e senha;
+* Agora podemos **enviar nossas próprias imagens** para o HUB!
+
+## Logout do Docker Hub
+
+* Para remover a conexão entre nossa máquina e o Docker Hub, vamos utilizar o comando **docker logout**;
+* Agora não podemos mais enviar imagens, pois não estamos autenticados;
+
+## Enviando imagem para o Docker Hub
+
+* Para enviar uma imagem nossa ao Docker Hub utilizamos o comando **docker push ID_IMAGEM**;
+* Porém antes vamos precisar **criar o repositório** para a mesma no site do Hub;
+* Também será necessário **estar autenticado**;
