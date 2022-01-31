@@ -420,6 +420,11 @@ docker top node_diferente2
 * E então inserir usuário e senha;
 * Agora podemos **enviar nossas próprias imagens** para o HUB!
 
+```docker
+<!-- PARA AUTENTICAR -->
+docker login
+```
+
 ## Logout do Docker Hub
 
 * Para remover a conexão entre nossa máquina e o Docker Hub, vamos utilizar o comando **docker logout**;
@@ -430,3 +435,141 @@ docker top node_diferente2
 * Para enviar uma imagem nossa ao Docker Hub utilizamos o comando **docker push ID_IMAGEM**;
 * Porém antes vamos precisar **criar o repositório** para a mesma no site do Hub;
 * Também será necessário **estar autenticado**;
+* Precisa criar a imagem com o mesmo nome do repositório
+
+```docker
+<!-- NO DIRETÓRIO ONDE TEM Dockerfile -->
+<!-- CRIA UMA IMAGEM COM O NOME -->
+docker build -t NOME_DA_IMAGEM_DO_REPOSITORIO .
+<!-- POR EXEMPLO -->
+docker build -t gustavoprimolan/nodeteste .
+
+<!-- PARA DAR O PUSH NO REPOSITORIO -->
+<!-- TEM QUE ESTAR AUTENTICADO -->
+docker push gustavoprimolan/nodeteste
+
+<!-- PUXA A IMAGEM SE NAO ESTIVER UPDATED-->
+docker pull gustavoprimolan/nodeteste
+
+<!-- EXCLUI A IMAGEM -->
+docker rmi gustavoprimolan/nodeteste
+
+```
+
+## Enviando atualização de imagem
+
+* Para enviar uma atualização **vamos primeiramente fazer o build**;
+* **Trocando a tag da imagem** (a tag marca a vesão) para uma versão atualizada;
+* **Depois vamos fazer um push** novamente para o repositório;
+* Assim todas as versões estarão disponíveis para serem utilizadas;
+
+```docker
+<!-- Depois dos : é a tag -->
+docker build gustavoprimolan/nodetest:novaversao
+
+<!-- Joga (upload) a imagem no docker repository -->
+docker push gustavoprimolan/nodetest:novaversao
+
+```
+
+## Baixando e utilizando a imagem
+
+* Para baixar a imagem podemos utilizar o comando **docker pull NOME_IMAGEM**;
+* E depois criar um novo container com **docker run NOME_IMAGEM**;
+* E pronto! Estaremos utilizando a nossa imagem com um container;
+
+```docker
+<!-- Nao precisa estar autenticado para baixar a imagem -->
+docker logout 
+
+<!-- Puxa a imagem do docker repository -->
+docker pull gustavoprimolan/nodetest:novaversao
+
+docker run --name testando_imagem -p 3000:3000 -d gustavoprimolan/nodetest:novaversao
+
+```
+
+# Introduzindo volumes aos nossos containers
+
+## O que são volumes?
+
+* Uma **forma prática de persistir dados** em aplicações e não depender de containers para isso;
+* **Todo dado criado por um container é salvo nele**, quando o container é removido perdemos os dados;
+* Então precisamos dos volumes para gerenciar os dados e também conseguir **fazer backups** de forma mais simples;
+
+## Tipos de volumes
+
+* **Anõnimos (anonymous volume):** Diretórios criados pela flag -v, porém com um nome aleatório; Casos de testes ele se encaixa bem; Não é interessante se pretendemos ficar utilizando várias vezes
+* **Nomeados (named volume):** São volumes com nomes, podemos nos referir a estes facilmente e saber para que são utilizados no nosso ambiente; Se quiser reaproveitar já existe um nome e fica mais simples para se reutilizar.
+* **Bind mounts:** Uma forma de salvar dados na nossa máquina, sem o gerenciamento do Docker, informamos um diretório para este fim;
+
+## O problema da persistência
+
+* Se criarmos um container com alguma imagem, **todos os arquivos que geramos dentro dele serão do container**;
+* Quando o container for removido, perderemos estes arquivos;
+* Por isso precisamos dos **volumes**;
+
+
+
+```docker
+<!-- DENTRO DO DIRETÓRIO 2_VOLUMES -->
+<!-- PARA CRIAR A IMAGEM USANDO O DOCKERFILE -->
+sudo docker build -t phpmessages .
+
+<!-- EXECUTAR A IMAGEM -->
+docker run -d -p 80:80 --name phptest phpmessages
+
+<!-- NAO DEIXA O CONTAINER SER PERSISTIDO, QUANDO VOCE PARAR ELE, ELE IRÁ MORRER -->
+docker run -d -p 80:80 --name phptest --rm phpmessages
+
+<!-- Acessar localhost -->
+<!-- Escrever algo no campo de input -->
+<!-- acessar http://localhost/messages/msg-0.txt -->
+<!-- Vai conseguir visualizar a mensagem salva dentro do diretorio -->
+<!-- Arquivo sendo salva no diretório messages dentro do container -->
+<!-- Se remover o container e subir um outro, os dados dentro do diretório messages será perdido -->
+
+```
+
+## Volumes anônimos
+
+* Podemos criar um volume anônimo (**anonymous**) da seguinte maneira: **docker run -v /data**
+* Onde **/data** será o diretório que contém o volume anônimo;
+* E este container estará atrelado ao volume anônimo;
+* Com o comando **docker volume ls**, podemos ver todos os volumes do nosso ambiente;
+
+```docker
+
+<!-- CRIA UM CONTAINER COM UM VOLUME ANONIMO -->
+docker run -d -p 80:80 --name phpmessages_container -v /data phpmessages
+
+<!-- LISTA OS VOLUMES EXISTENTES -->
+docker volume ls
+
+<!-- VOCE CONSEGUE VISUALIZAR OS VOLUMES QUE ESTAO VINCULADOS AO CONTAINER -->
+docker inspect phpmessages_container
+
+```
+
+## Volumes nomeados
+
+* Podemos criar um volume nomeado (**named**) da seguinte maneira: **docker run -v NOME_DO_VOLUME:/data**
+* Agora o volume tem um nome e pode ser facilmente referenciado;
+* Em **docker volume ls** podemos verificar o container nomeado criado;
+* Da mesma maneira que o anônimo, este volume tem como função armazenar arquivos;
+
+```docker
+<!-- O CAMINHO DO VOLUME PRECISA SER UM ARQUVIO EXISTENTE DENTRO DO CONTAINER -->
+<!-- -rm PARA NAO PERSISTIR O CONTAINER -->
+docker run -d -p 80:80 --name phpmessages_container -v phpvolume:/var/www/html/messages --rm phpmessages
+
+<!-- SUBIR OUTRO CONTAINER COM O MESMO DIRETORIO PERSISTIDO -->
+<!-- SE ACESSAR O LOCALHOST NA PORTA 81 SERÁ POSSÍVEL VISUALIZAR AMBOS ARQUIVOS SALVOS PELO CONTAINER NA PORTA 80 -->
+docker run -d -p 81:80 --name phpmessages_container -v phpvolume:/var/www/html/messages --rm phpmessages
+
+```
+
+## Bind mounts
+
+* **Bind mount** também é um volume, porém ele fica em um diretório que nós especificamos;
+* Então não criamos um volume em si, **apontamos um diretório**
