@@ -573,3 +573,89 @@ docker run -d -p 81:80 --name phpmessages_container -v phpvolume:/var/www/html/m
 
 * **Bind mount** também é um volume, porém ele fica em um diretório que nós especificamos;
 * Então não criamos um volume em si, **apontamos um diretório**
+* O comando para criar um bind mout é: **docker run /dir/data:/data**
+* Desta maneira o diretório /dir/data no nosso computador será o volume deste container;
+
+```docker
+docker run -d -p 80:80 --name phpmessages_container -v PATH_COMPLETO_DO_DIRETORIO_DA_MAQUINA:/var/www/html/messages --rm phpmessages
+
+<!-- SE POSSUI DIRETORIO COM ESPAÇOS -->
+docker run -d -p 80:80 --name phpmessage_container -v "D:\Documentos\Curso Docker\Volumes\Projeto prático\2_VOLUMES\messages:/var/www/html/messages" --rm phpmessages
+
+```
+
+## Atualização do projeto com bind mount
+
+* **Bind mount** não serve apenas para volumes!
+* Podemos utilizar esta técnica para **atualização em tempo real do projeto**;
+* Sem ter que refazer o build a cada atualização do mesmo;
+
+```docker
+
+<!-- PARA ATUALIZAR O PROJETO -->
+<!-- AGORA SEMPRE QUE VOCE MODIFICAR O ALGUMA COISA NO PROJETO O SEU CONTAINER TAMBÉM IRÁ ATUALIZAR AQUELE ARQUIVO, POIS OS ARQUIVOS DE AMBOS OS DIRETÓRIOS ESTAO CONECTADOS (LIKADOS) -->
+docker run -d -p 80:80 --name phpmessages_container -v /Users/gustavoprimolan/workspace/personal/github/devops-studies/docker-para-desenvolvedores-docker-swarm-e-kubernetes-udemy/2_VOLUMES:/var/www/html --rm phpmessages
+```
+
+## Criar um volume
+* Podemos criar volumes manualmente também;
+* Utilizamos o comando: **docker volume create NOME_DO_VOLUME**
+* Desta maneira temos um **named volume** criado, podemos atrelar a algum container na execução do mesmo;
+
+```docker
+
+docker volume create volumeteste
+
+<!-- AO INVÉS DE CRIAR O VOLUME ELE VAI SIMPLESMENTE UTILIZAR O QUE JÁ EXISTE -->
+docker run -d -p 80:80 --name phpmessages_container -v volumeteste:/var/www/html --rm phpmessages
+
+```
+
+## Listando todos os volumes
+
+* Com o comando: **docker volume ls** listamos todos os volumes;
+* Desta maneira temos acesso aos **anonymous e os named volumes**;
+* Interessante para saber quais volumes estão criados no nosso ambiente;
+
+## Checar um volume
+
+* Podemos verificar os detalhes de um volume em específico com o comando: **docker volume inspect nome**;
+* Desta forma temos acesso ao **local em que o volume guarda dados**, nome, escopo e muito mais;
+* O docker salva os dados dos volumes em algum diretório do nosso computador, desta forma podemos saber qual é;
+
+```docker
+docker volume inspect phpvolume
+```
+
+## Remover um volume
+
+* Podemos também remover um volume existente de forma fácil;
+* Vamos utilizar o comando **docker volume rm NOME_DO_VOLUME**
+* Observe que **os dados serão removidos todos também**, tome cuidado com esse comando;
+
+## Removendo volumes não utilizados
+
+* Podemos **remover todos os volumes que não estão sendo tulizados** com apenas um comando;
+* O comando é: **docker volume prune**
+* Semelhante ao prune que remove imagens e containers, visto anteriormente;
+
+## Volume apenas de leitura
+
+* Podemos criar um volume que tem **apenas permissão de leitura**, isso é útil em algumas aplicações;
+* Para realizar esta configuração devemos utilizar o comando: **docker run -v volume:/data:ro**
+* Este **ro** é a abreviação de read only;
+
+```docker
+
+docker run -d -p 80:80 --name phpmessages_container -v volumeleitura:/var/www/html:ro phpmessages
+
+```
+
+# Conectando containers com Networks
+
+## O que são Networks no Docker?
+
+* **Uma forma de gerenciar a conexão do Docker** com outras plataformas ou até mesmo entre containers''
+* As redes ou networks são **criadas separadas do containers**, como os volumes;
+* Além disso existem alguns **drivers de rede**, que veremos em seguida;
+* Uma rede deixa muito simples a comunicação entre containers;
