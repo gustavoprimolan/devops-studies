@@ -659,3 +659,24 @@ docker run -d -p 80:80 --name phpmessages_container -v volumeleitura:/var/www/ht
 * As redes ou networks são **criadas separadas do containers**, como os volumes;
 * Além disso existem alguns **drivers de rede**, que veremos em seguida;
 * Uma rede deixa muito simples a comunicação entre containers;
+
+
+## Tipos de conexão
+
+* Os containers costumam ter três principais tipos de comunicação:
+    * **Externa:** Conexão com uma API de um servidor remoto;
+    * **Com o host:** Comunicação com a máquina que está executando o Docker;
+    * **Entre containers:** Comunicação que utiliza o driver bridge e permite a comunicação entre dois ou mais containers;
+
+## Tipos de rede (drivers)
+
+* **Bridge:** O mais comum e default do Docker, utilizado quando containers precisam se conectar (na maioria das vezes optamos por este driver);
+* **Host:** Permite a conexão entre um container a máquina que está hosteando o Docker;
+* **Macvlan:** Permite a conexão a um container por um MAC Address;
+* **None:** Remove todas conexões de rede de um container;
+* **Plugins:** Permite extensões de terceiros para criar outras redes;
+
+## Listando redes
+
+* Podemos verificar todas as redes do nosso ambinete com: **docker network ls**;
+* **Algumas redes já estão criadas**, estas fazem parte da configuração inicial do docker;
