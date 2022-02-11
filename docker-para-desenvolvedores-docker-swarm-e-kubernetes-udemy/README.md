@@ -680,3 +680,50 @@ docker run -d -p 80:80 --name phpmessages_container -v volumeleitura:/var/www/ht
 
 * Podemos verificar todas as redes do nosso ambinete com: **docker network ls**;
 * **Algumas redes já estão criadas**, estas fazem parte da configuração inicial do docker;
+
+
+## Criando rede
+
+* Para criar uma rede vamos utilizar o comando docker **network create NOME_DA_NETWORK**;
+* Esta rede será do tipo **bridge**, que é o mais utilizado;
+* Podemos criar diversas redes;
+
+```docker
+<!-- CRIA NOVA REDE PADRAO BRIDGE-->
+docker network create minharedeteste
+
+docker network ls
+
+<!-- CRIA UMA MACVLAN -->
+docker network create -d macvlan meumacvlan
+
+```
+
+## Removendo redes
+
+* Podemos remover redes de forma simples também: **docker network rm NOME_DA_REDE**;
+* Assim **a rede não estará mais disponível** para utilizarmos;
+* Devemos tomar cuidado com containers já conectados;
+
+```docker
+
+<!-- QUANDO MOSTRAR O NOME QUER DIZER QUE REMOVEU -->
+docker network rm meumacvlav
+
+docker network rm minharedeteste
+
+docker network ls
+
+```
+
+## Removendo redes em massa
+
+* Podemos remover redes de forma simples também: **docker network prune**;
+* Assim **todas as redes não utilizadas** no momento serão removida;
+* Receberemos uma mensagem de confirmação do Docker antes da ação ser executada;
+
+```docker
+
+docker network prune
+
+```
