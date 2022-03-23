@@ -727,3 +727,95 @@ docker network ls
 docker network prune
 
 ```
+
+## Conexão externa
+
+* Os containers **podem se conectar livremente ao mundo externo**;
+* Um caso seria: Uma API de código aberto;
+* Podemos acessá-la livremente e utilizar seus dados;
+* Vamos testar!
+
+```docker
+<!-- GO TO docker-para-desenvolve.../3_NETWORKS/1_externa -->
+docker build -t flaskexterno .
+
+docker run -d -p 5000:5000 --name flaskexternocontainer flaskexterno
+
+<!-- REMOVE O CONTAINER QUANDO PARA A EXECUÇÃO -->
+docker run -d -p 5000:5000 --name flaskexternocontainer --rm flaskexterno
+
+```
+
+## Conexão com o host
+
+* Podemos também **conectar um container com o host do Docker**;
+* **Host** é a máquina que está executando o Docker;
+* Como IP de host utilizamos: **host.docker.internal**
+* No caso pode ser nossa máquina mesmo
+* [Exemplo](3_NETWORKS/2_host)
+
+## Conexão entre containers
+
+* Podemos também estabelecer uma **conexão entre containers**;
+* Duas imagens distintas rodando em **containers separados que precisam se conectar para inserir um dado no banco**, por exemplo;
+* Vamos precisar de uma rede **bridge**, para fazer esta conexão;
+* Agora nosso container de flask vai inserir dados em um MySQL que roda pelo Docker também;
+* [Exemplo](3_NETWORKS/3__conn_containers)
+
+```docker
+cd 3_NETWORKS/3_conn_containers/mysql
+
+<!-- BUILDA O DOCKER FILE -->
+docker build -t mysqlnetworkapi .
+
+<!-- CRIA A BRIDGE -->
+docker network create flasknetwork
+docker network ls
+
+<!-- '-e' VARIÁVEL DE AMBIENTE -->
+docker run -d -p 3306:3306 --name mysql_api_container --rm --network flasknetwork -e MYSQL_ALLOW_EMPTY_PASSWORD=True mysqlapinetwork
+
+cd 3_NETWORKS/3_conn_containers/flask
+
+docker build -t flaskapinetwork .
+
+docker run -d -p 5000:5000 --name flask_api_container --rm --network flasknetwork flaskapinetwork
+
+docker ps
+
+```
+
+## Conectar container a uma rede
+* Podemos conectar um container a uma rede;
+* Vamos utilizar o comando **docker network connect REDE ID_DO_CONTAINER**
+* Após o comando o container estará dentro da rede
+
+```docker
+
+docker network connect flasknetwork ID_DO_CONTAINER
+
+```
+
+## Desconectar container de uma rede
+* Podemos desconectar um container a uma rede também;
+* Vamos utilizar o comando **docker network disconnect REDE ID_CONTAINER**
+* Após o comando o container estará fora da rede!
+
+## Inspecionando redes
+* Podemos analisar os detalhes de uma rede com o comando: **docker network inspect NOME_REDE**
+* Vamos receber informações como: data de criação, driver, nome e muito mais!
+
+```docker
+
+<!-- REDE DOCKER -->
+docker network inspect host
+
+```
+
+# Introdução ao YAML
+
+## o que é YAML?
+* Uma linguagem de serialização, seu nome é **YAML ain't Markup Language** (YAML não é uma linguagem de marcação);
+* Usada geralmente para arquivos de configuração, inclusive do Docker, para configurar o **Docker Compose**;
+* É de fácil leitura para nós humanos;
+* A extensão dos arquivos é **yml** ou **yaml**;
