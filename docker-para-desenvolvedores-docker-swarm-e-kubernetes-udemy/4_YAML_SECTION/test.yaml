@@ -1,0 +1,6 @@
+nome: "Gustavo"
+idade: 30
+
+objeto:
+  versao: 2
+  arquivo: "teste.txt"

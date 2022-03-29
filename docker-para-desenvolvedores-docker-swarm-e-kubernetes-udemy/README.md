@@ -819,3 +819,18 @@ docker network inspect host
 * Usada geralmente para arquivos de configuração, inclusive do Docker, para configurar o **Docker Compose**;
 * É de fácil leitura para nós humanos;
 * A extensão dos arquivos é **yml** ou **yaml**;
+
+## Vamos criar nosso arquivo YAML
+
+* O arquivo **,yaml** geralmente possui chaves e valores;
+* Que é de onde vamos retirar as configurações do nosso sistema;
+* Para definir uma chave apenas inserimos o nome dela, em seguida colocamos **dois pontos e depois o valor**;
+* Vamos criar nosso primeiro arquivo YAML;
+* [Exemplo](4_YAML_SECTION/3__conn_containers)
+
+## Espaçamento e indentação
+
+* O **fim de uma linha** indica o fim de uma instrução, não há ponto e vírgula;
+* A indentação deve conter **um ou mais espaços**, e não devemos utilizar tab;
+* E cada uma define um novo bloco;
+* O **espaço é obrigatório** após a declaração da chave;
