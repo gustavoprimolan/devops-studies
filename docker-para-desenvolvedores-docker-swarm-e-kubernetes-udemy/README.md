@@ -834,3 +834,53 @@ docker network inspect host
 * A indentação deve conter **um ou mais espaços**, e não devemos utilizar tab;
 * E cada uma define um novo bloco;
 * O **espaço é obrigatório** após a declaração da chave;
+
+## Comentários
+
+* Podemos escrever comentários em YAML também, utilizando o símbolo **#**;
+* O processador de YAML **ignora comentários**;
+* Eles são uteis para escrever com o arquivo funciona/foi configurado;
+
+## Dados numéricos
+
+* Em YAML podemos escrever dados numéricos com:
+* **Inteiros** = 12;
+* **Floats** = 15.8;
+
+## Strings
+
+* Em YAML podemos escrever textos de duas formas:
+* **Sem aspas**: este é um texto válido
+* **Com aspas**: "e este também"
+
+## Dados nulos
+
+* Em YAML podemos definir um dado como nulo de duas formas:
+* **~** ou **null**
+* Os dois vão resultar em None, após a interpretação 
+
+## Booleanos
+
+* Podemos inserir booleanos em YAML da seguinte forma:
+* **True e On** = verdadeiro;
+* **False e Off** = falso;
+
+## Arrays
+
+* Os arrays, tipos de dados para listas, possuem duas sintaxes:
+* Primeira: **[1, 2, 3, 4, 5]**
+* Segunda:
+* items:
+    - 1
+    - 2
+    - 3
+
+
+## Dicionários
+
+* Os dicionários, tipo de dados para objetos ou listas com chaves e valores, podem ser escritos assim:
+* obj: {a :1, b: 2, c: 3}
+* E também com o nesting:
+* objeto
+    - chave: 1
+    - chave: 2

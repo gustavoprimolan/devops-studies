@@ -1,6 +1,38 @@
+# Instruções para o programa
 nome: "Gustavo"
-idade: 30
+idade: 30 # Esta é a ideade do usuário
 
+# Este objeto descreve o nosso projeto
 objeto:
   versao: 2
   arquivo: "teste.txt"
+
+versao: 2
+versao_completa: 3.14
+
+string_sem_aspas: Digite um texto arquivo
+text: "Este tambem e um texto válido para o YAML"
+
+#Considerados como nulo
+nulo: ~
+nulo2: null
+
+#Considerados como true
+verdadeiro: True
+verdadeiro_dois: On
+
+#Considerados como false
+falso: False
+falso_dois: Off
+
+# Listas
+lista: [1, 2, 3, 4, 5]
+lista_dois:
+  - "teste"
+  - 10
+  - outro teste
+  - True
+  - null
+
+
+# Dicionários
