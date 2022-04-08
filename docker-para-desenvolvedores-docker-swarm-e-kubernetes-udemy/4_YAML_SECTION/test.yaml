@@ -36,3 +36,11 @@ lista_dois:
 
 
 # Dicionários
+obj : {a: 1, b: 2, c: 3}
+
+objeto: 
+  a: 1
+  b: 2
+  c: 3
+  objeto_interno: teste
+

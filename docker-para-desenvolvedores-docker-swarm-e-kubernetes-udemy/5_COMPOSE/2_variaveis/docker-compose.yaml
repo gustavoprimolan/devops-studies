@@ -1,0 +1,33 @@
+# Versão do compose - Provavel tem maiores
+#Pré configurado no compose
+version: '3.3'
+
+#Serivces é um comando pré configurado do docker
+services:
+  db: # Container de MySql
+    image: mysql:5.7 #FROM mysql:5.7
+    volumes: 
+      - db_data:/var/lib/mysql
+    restart: always
+    env_file: #PEGA O ARQUIVO ENV E AS VARIAVEIS
+      - ./config/db.env
+ 
+  
+  wordpress:
+    depends_on: #QUAIS SERVICOS ESSE SERVICO DEPENDE - CRIA UMA ORDEM
+      - db
+    image: wordpress:latest
+    ports:
+      - "8000:80"
+    restart: always
+    env_file:
+      - ./config/wp.env
+    # environment:
+      # WORDPRESS_DB_HOST: db:3306 # VAI PEGAR O CAMINHO DO SERVICO ANTERIOR
+      # WORDPRESS_DB_USER: gustavo
+      # WORDPRESS_DB_PASSWORD: secret
+      # WORDPRESS_DB_NAME: wordpress
+
+volumes:
+  db_data: {}
+
