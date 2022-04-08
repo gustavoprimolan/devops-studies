@@ -1019,3 +1019,73 @@ networks:
 * Desta forma conseguimos garantir uma aplicação saudável e também que esteja sempre disponível;
 * Alguns serviços: **Docker Swarm, Kubernetes e Apache Mesos**;
 
+## O que é Docker Swarm?
+
+* Uma ferramente do Docker para **orquestrar containers**;
+* Podendo **escalar horizontalmente** nossos projetos de maneira simples;
+* O famoso **cluster**! - Várias máquinas em paralelos, máquinas virtuais (AWS, GCP). Variás instancias sincronizadas em vários projetos fazendo o Load Balancer.
+* A **facilidade do Swarm** para outros orquestradores é que todos os comandos são muito semelhantes ao do Docker;
+* Toda instalação do Docker já vem com Swarm, **porém desabilitado**;
+
+## Conceitos fundamentais
+
+* **Nodes:** é uma instância (máquina) que participa do Swarm;
+* **Manager Node:** Node que gerencia os demais Nodes;
+* **Worker Node:** Nodes que trabalham em função do Manager;
+* **Service:** Um conjunto de Tasks que o Managerr Node manda o Work Node executar; - Containers
+* **Task:** comandos que são executados nos Nodes; - Inicio do container como os outros comando que vao refletir nos workers
+
+## Maneira de executar o Swarm
+
+* Para exemplificar corretamente o Swarm vamos precisar de Nodes, ou seja, **mais máquinas**;
+* Então temos duas soluções:
+* **AWS**, criar a conta e rodar alguns servidores (precisa de cartão de crédito, mas é gratuito);
+* **Docker Labs**, gratuito também, roda no navegador, porém expira a cada 4 horas.
+
+
+```
+
+<!-- Na instancia EC2 EXECUTAR DEPOIS DE CRIAR, LIBERAR AS PORTAS E INSTALAR O DOCKER -->
+
+<!-- INICIALIZA O SWARM -->
+sudo docker swarm init
+
+<!-- SAI DO SWARM -->
+sudo docker swarm leave -f 
+
+```
+
+
+## Docker labs
+
+* labs.play-with-docker.com
+
+```
+<!--  ALGUMAS MÁQUINAS PEDEM O IP DA MÁQUINA PARA INICIALIZAR O SWARM-->
+
+docker swarm init --advertise-addr 192.168.0.23
+
+```
+
+## Iniciando o Swarm
+
+* Podemos iniciar o Swarm com o comando: **docker swarm init**;
+* Em alguns casos precisamos declarar o IP do servidor com a flag: **--advertise-addr**
+* Isso fará com que a instância/máquina vire um **Node**;
+* E também transforma o Node em um **Manager**;
+
+## Listando Nodes ativos
+
+* Podemos verificar quais Nodes estão ativos com: **docker node ls**
+* Desta forma os serviços serão exibidos no terminal;
+* Podemos assim **monitorar o que o Swarm está orquestrando**;
+* Este comando será de grande utilidade a medida que formos adicionando serviços no Swarm;
+
+## Adicionando novos Nodes
+
+* Podemos adicionar um novo serviço com o comando: **docker swarm join --token TOKEN IP:PORTA**
+* Desta forma duas máquinas estarão conectadas;
+* Esta nova máquina entra na hierarquia como **Worker**;
+* Todas as ações (**Tasks**) utilizadas na Manager, serão replicadas em Nodes que foram adicionados com join;
+
+
