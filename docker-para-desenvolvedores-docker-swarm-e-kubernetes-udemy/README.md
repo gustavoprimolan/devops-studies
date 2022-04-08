@@ -953,6 +953,69 @@ docker network inspect host
 
 ## Vamos incluir o projeto no Compose
 
+* * [Exemplo](4_COMPOSE/4_projeto)
 * Agora vamos inserir o nosso projeto da última seção no Compose;
 * Para verificar na prática como fazer uma transferência de **Dockerfiles para Docker Compose!**
+* Precisa buildar as imagens e depois rodar o docker-compose up
+
+
+## Build no Compose
+
+* Podemos gerar o **build durante o Compose** também;
+* Isso vai **eliminar o processo de gerar o build da imagem** a cada atualização;
+* Vamos ver na prática!
+
+
+```yml
+version: '3.3'
+
+services:
+  db:
+    build: ./mysql/
+    # image: mysqlcompose
+    restart: always
+    env_file:
+      - ./config/db.env
+    ports:
+      - "3306:3306"
+    networks:
+      - dockercompose
+    
+  backend:
+    depends_on:
+      - db
+    build: ./flask/
+    # image: flaskcompose
+    ports:
+      - "5000:5000"
+    restart: always
+    networks:
+      - dockercompose
+  
+networks:
+  dockercompose:
+
+```
+
+## Bind mount no Compose
+
+* O volume de **Bind Mount garante atualização em tempo real dos arquivos do container**;
+* Podemos configurar nosso projeto de Compose para utilizar esta funcionalidade também;
+* Vamos ver na prática!
+
+## Verificando o que tem no Compose
+
+* Podemos fazer a vaerificação do compose com: **docker-compose ps**
+* Receberemos um **resumo dos serviços que sobem** ao rodar o compose;
+* Desta maneira podemos avaliar rapidamente o projeto;
+
+
+# Seção 8 - Docker Swarm para orquestração
+
+## O que é orquestração de containers:
+
+* Orquestração é o ato de conseguir **gerenciar e escalar** os containers da nossa aplicação;
+* Temos **um serviço que rege sobre outros serviços**, verificando se os mesmos estão funcionando como deveriam;
+* Desta forma conseguimos garantir uma aplicação saudável e também que esteja sempre disponível;
+* Alguns serviços: **Docker Swarm, Kubernetes e Apache Mesos**;
 
